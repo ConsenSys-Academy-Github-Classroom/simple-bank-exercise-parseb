@@ -105,8 +105,11 @@ contract SimpleBank {
       //    sender's balance
         address payable sendtoaddress = msg.sender;
         balances[sendtoaddress] -= withdrawAmount;
-        sendtoaddress.transfer(withdrawAmount);
-        
+        (bool success, ) = sendtoaddress.call.value(withdrawAmount)("");
+      //sendtoaddress.transfer(withdrawAmount);
+        if (!success) {
+          revert("Withdrawal failed.");
+         }
       // 3. Emit the appropriate event for this message
         emit LogWithdrawal(sendtoaddress, withdrawAmount, balances[sendtoaddress]);
     }
