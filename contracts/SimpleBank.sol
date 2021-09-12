@@ -104,8 +104,9 @@ contract SimpleBank {
       // 2. Transfer Eth to the sender and decrement the withdrawal amount from
       //    sender's balance
         address payable sendtoaddress = msg.sender;
-        sendtoaddress.transfer(withdrawAmount);
         balances[sendtoaddress] -= withdrawAmount;
+        sendtoaddress.transfer(withdrawAmount);
+        
       // 3. Emit the appropriate event for this message
         emit LogWithdrawal(sendtoaddress, withdrawAmount, balances[sendtoaddress]);
     }
